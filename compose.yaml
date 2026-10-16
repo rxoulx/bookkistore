@@ -9,7 +9,7 @@ services:
     depends_on:
       - web
     networks:
-      - bookstore-net
+      - frontend-net
 
   web:
     build: ./web
@@ -25,7 +25,8 @@ services:
       db:
         condition: service_healthy
     networks:
-      - bookstore-net
+      - frontend-net
+      - backend-net
 
   db:
     image: postgres:16-alpine
@@ -41,12 +42,14 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - bookstore-net
+      - backend-net
 
 volumes:
   pgdata:
   vendor:
 
 networks:
-  bookstore-net:
+  frontend-net:
+    driver: bridge
+  backend-net:
     driver: bridge
